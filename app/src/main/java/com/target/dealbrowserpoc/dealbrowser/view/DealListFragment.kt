@@ -1,4 +1,4 @@
-package com.target.dealbrowserpoc.dealbrowser
+package com.target.dealbrowserpoc.dealbrowser.view
 
 import android.app.Activity
 import android.app.Fragment
@@ -8,7 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.target.dealbrowserpoc.dealbrowser.web.Deal
+import com.target.dealbrowserpoc.dealbrowser.R
+import com.target.dealbrowserpoc.dealbrowser.entity.Datum
 
 class DealListFragment : Fragment() {
 
@@ -18,7 +19,7 @@ class DealListFragment : Fragment() {
     private lateinit var viewAdapter: DealListAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var itemClickListener: View.OnClickListener
-    private lateinit var dealData: Deal
+    private lateinit var dealsData: List<Datum>
     private var loadAnimation = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,8 +59,8 @@ class DealListFragment : Fragment() {
         itemClickListener = listener
     }
 
-    fun setDealsData(deal: Deal) {
-        dealData = deal
+    fun setDealsData(deals: List<Datum>) {
+        dealsData = deals
         populateDeals()
     }
 
@@ -68,8 +69,8 @@ class DealListFragment : Fragment() {
     }
 
     private fun populateDeals() {
-        if (this::dealData.isInitialized) {
-            viewAdapter.setDealsData(dealData)
+        if (this::dealsData.isInitialized) {
+            viewAdapter.setDealsData(dealsData)
             viewAdapter.notifyDataSetChanged()
         }
     }

@@ -1,4 +1,4 @@
-package com.target.dealbrowserpoc.dealbrowser
+package com.target.dealbrowserpoc.dealbrowser.app
 
 class Constants {
     companion object {

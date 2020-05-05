@@ -1,4 +1,4 @@
-package com.target.dealbrowserpoc.dealbrowser
+package com.target.dealbrowserpoc.dealbrowser.view
 
 import android.app.Fragment
 import android.content.Context
@@ -11,8 +11,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.target.dealbrowserpoc.dealbrowser.R
 import com.target.dealbrowserpoc.dealbrowser.deals.DealContent
-import com.target.dealbrowserpoc.dealbrowser.web.Datum
+import com.target.dealbrowserpoc.dealbrowser.entity.Datum
 
 class DealDetailFragment : Fragment() {
     private lateinit var detailData: Datum

@@ -1,35 +1,59 @@
 
-package com.target.dealbrowserpoc.dealbrowser.web;
+package com.target.dealbrowserpoc.dealbrowser.entity;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Datum {
 
+    @PrimaryKey
+    @NonNull
     @SerializedName("_id")
     @Expose
     private String id;
+
+    @ColumnInfo(name = "aisle")
     @SerializedName("aisle")
     @Expose
     private String aisle;
+
+    @ColumnInfo(name = "description")
     @SerializedName("description")
     @Expose
     private String description;
+
+    @ColumnInfo(name = "guid")
     @SerializedName("guid")
     @Expose
     private String guid;
+
+    @ColumnInfo(name = "image")
     @SerializedName("image")
     @Expose
     private String image;
+
+    @ColumnInfo(name = "index")
     @SerializedName("index")
     @Expose
     private Integer index;
+
+    @ColumnInfo(name = "price")
     @SerializedName("price")
     @Expose
     private String price;
+
+    @ColumnInfo(name = "salePrice")
     @SerializedName("salePrice")
     @Expose
     private String salePrice;
+
+    @ColumnInfo(name = "title")
     @SerializedName("title")
     @Expose
     private String title;

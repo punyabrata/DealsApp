@@ -1,4 +1,4 @@
-package com.target.dealbrowserpoc.dealbrowser
+package com.target.dealbrowserpoc.dealbrowser.view
 
 import android.content.Context
 import android.os.Handler
@@ -12,11 +12,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.target.dealbrowserpoc.dealbrowser.R
 import com.target.dealbrowserpoc.dealbrowser.deals.DealContent
-import com.target.dealbrowserpoc.dealbrowser.web.Deal
+import com.target.dealbrowserpoc.dealbrowser.entity.Datum
 
 class DealListAdapter(val context: Context, val loadAnimation: Boolean) : RecyclerView.Adapter<DealListAdapter.DealViewHolder>() {
-    private var deal = Deal()
+    //    private var deal = Deal()
+    private var deals: List<Datum>? = null
     private val TAG: String? = "DealListFragment"
     private lateinit var onItemClickListener: View.OnClickListener
 
@@ -27,8 +29,8 @@ class DealListAdapter(val context: Context, val loadAnimation: Boolean) : Recycl
     }
 
     override fun getItemCount(): Int {
-        Log.v(TAG, "Data size ${deal.data?.size ?: 0}")
-        return deal.data?.size ?: return 0
+        Log.v(TAG, "Data size ${deals?.size ?: 0}")
+        return deals?.size ?: return 0
     }
 
     override fun onBindViewHolder(p0: DealViewHolder, p1: Int) {
@@ -37,9 +39,9 @@ class DealListAdapter(val context: Context, val loadAnimation: Boolean) : Recycl
                 .load(R.drawable.spinner_1s_200px)
                 .into(p0.itemImage)
 
-        p0.itemTitle.text = deal.data[p1].title
-        p0.itemPrice.text = deal.data[p1].price
-        p0.itemAisle.text = deal.data[p1].aisle.toUpperCase()
+        p0.itemTitle.text = deals!![p1].title
+        p0.itemPrice.text = deals!![p1].price
+        p0.itemAisle.text = deals!![p1].aisle.toUpperCase()
 
         val runnable = Runnable {
             loadFromLocal(p1, p0)
@@ -51,7 +53,7 @@ class DealListAdapter(val context: Context, val loadAnimation: Boolean) : Recycl
     private fun loadFromNetwork(index: Int, viewHolder: DealViewHolder) {
         Glide.with(context)
                 .setDefaultRequestOptions(RequestOptions().timeout(5000))
-                .load(deal.data[index].image)
+                .load(deals!![index].image)
                 .into(viewHolder.itemImage)
     }
 
@@ -65,8 +67,8 @@ class DealListAdapter(val context: Context, val loadAnimation: Boolean) : Recycl
         onItemClickListener = listener
     }
 
-    fun setDealsData(deal: Deal) {
-        this.deal = deal
+    fun setDealsData(deals: List<Datum>) {
+        this.deals = deals
     }
 
     inner class DealViewHolder(constraintLayout: ConstraintLayout) : RecyclerView.ViewHolder(constraintLayout) {

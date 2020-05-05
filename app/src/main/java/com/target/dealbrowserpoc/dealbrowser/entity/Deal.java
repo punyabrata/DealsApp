@@ -1,5 +1,5 @@
 
-package com.target.dealbrowserpoc.dealbrowser.web;
+package com.target.dealbrowserpoc.dealbrowser.entity;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;
