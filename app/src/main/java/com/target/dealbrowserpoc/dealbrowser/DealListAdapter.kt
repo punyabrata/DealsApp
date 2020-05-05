@@ -1,20 +1,24 @@
 package com.target.dealbrowserpoc.dealbrowser
 
 import android.content.Context
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.target.dealbrowserpoc.dealbrowser.deals.DealContent
 import com.target.dealbrowserpoc.dealbrowser.web.Deal
 
-class DealListAdapter(val context: Context) : RecyclerView.Adapter<DealListAdapter.DealViewHolder>() {
+class DealListAdapter(val context: Context, val loadAnimation: Boolean) : RecyclerView.Adapter<DealListAdapter.DealViewHolder>() {
     private var deal = Deal()
     private val TAG: String? = "DealListFragment"
+    private lateinit var onItemClickListener: View.OnClickListener
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): DealViewHolder {
         val constraintLayout = LayoutInflater.from(p0.context)
@@ -29,32 +33,51 @@ class DealListAdapter(val context: Context) : RecyclerView.Adapter<DealListAdapt
 
     override fun onBindViewHolder(p0: DealViewHolder, p1: Int) {
         Log.v(TAG, "Data index = $p1")
-//        Glide.with(context)
-//                .load(R.drawable.spinner_1s_200px)
-//                .into(p0.itemImage)
+        Glide.with(context)
+                .load(R.drawable.spinner_1s_200px)
+                .into(p0.itemImage)
 
         p0.itemTitle.text = deal.data[p1].title
         p0.itemPrice.text = deal.data[p1].price
         p0.itemAisle.text = deal.data[p1].aisle.toUpperCase()
 
-//        Glide.with(context)
-//                .setDefaultRequestOptions(RequestOptions().timeout(5000))
-//                .load(deal.data[p1].image)
-//                .into(p0.itemImage)
+        val runnable = Runnable {
+            loadFromLocal(p1, p0)
+        }
 
+        Handler().postDelayed(runnable, if (loadAnimation) 2000 else 0)
+    }
+
+    private fun loadFromNetwork(index: Int, viewHolder: DealViewHolder) {
         Glide.with(context)
-                .load(DealContent.ITEMS[p1%10].image)
-                .into(p0.itemImage)
+                .setDefaultRequestOptions(RequestOptions().timeout(5000))
+                .load(deal.data[index].image)
+                .into(viewHolder.itemImage)
+    }
+
+    private fun loadFromLocal(index: Int, viewHolder: DealViewHolder) {
+        Glide.with(context)
+                .load(DealContent.ITEMS[index % 10].image)
+                .into(viewHolder.itemImage)
+    }
+
+    fun setItemClickListener(listener: View.OnClickListener) {
+        onItemClickListener = listener
     }
 
     fun setDealsData(deal: Deal) {
         this.deal = deal
     }
 
-    class DealViewHolder(constraintLayout: ConstraintLayout) : RecyclerView.ViewHolder(constraintLayout) {
-        val itemImage = constraintLayout.findViewById<ImageView>(R.id.item_image)
-        val itemTitle = constraintLayout.findViewById<TextView>(R.id.item_title)
-        val itemPrice = constraintLayout.findViewById<TextView>(R.id.item_price)
-        val itemAisle = constraintLayout.findViewById<TextView>(R.id.item_aisle)
+    inner class DealViewHolder(constraintLayout: ConstraintLayout) : RecyclerView.ViewHolder(constraintLayout) {
+        val itemImage: ImageView = constraintLayout.findViewById(R.id.item_image)
+        val itemTitle: TextView = constraintLayout.findViewById(R.id.item_title)
+        val itemPrice: TextView = constraintLayout.findViewById(R.id.item_price)
+        val itemAisle: TextView = constraintLayout.findViewById(R.id.item_aisle)
+
+        init {
+            constraintLayout.tag = this
+            constraintLayout.setOnClickListener(onItemClickListener)
+        }
     }
 }
