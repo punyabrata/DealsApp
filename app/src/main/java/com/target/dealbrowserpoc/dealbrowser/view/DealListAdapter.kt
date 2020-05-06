@@ -17,7 +17,6 @@ import com.target.dealbrowserpoc.dealbrowser.deals.DealContent
 import com.target.dealbrowserpoc.dealbrowser.entity.Datum
 
 class DealListAdapter(val context: Context, val loadAnimation: Boolean) : RecyclerView.Adapter<DealListAdapter.DealViewHolder>() {
-    //    private var deal = Deal()
     private var deals: List<Datum>? = null
     private val TAG: String? = "DealListFragment"
     private lateinit var onItemClickListener: View.OnClickListener

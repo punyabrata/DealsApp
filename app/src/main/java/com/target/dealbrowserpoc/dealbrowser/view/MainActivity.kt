@@ -1,6 +1,5 @@
 package com.target.dealbrowserpoc.dealbrowser.view
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.app.Fragment
 import android.os.Bundle
@@ -8,22 +7,13 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.target.dealbrowserpoc.dealbrowser.R
-import com.target.dealbrowserpoc.dealbrowser.app.Constants
-import com.target.dealbrowserpoc.dealbrowser.db.DealDatabase
 import com.target.dealbrowserpoc.dealbrowser.entity.Datum
-import com.target.dealbrowserpoc.dealbrowser.entity.Deal
-import com.target.dealbrowserpoc.dealbrowser.repository.DealRepository
-import com.target.dealbrowserpoc.dealbrowser.service.TargetDealService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
+import com.target.dealbrowserpoc.dealbrowser.factory.DealViewModelFactory
 
-class MainActivity : Activity(), DealListFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), DealListFragment.OnFragmentInteractionListener {
 
     private val TAG: String? = "MainActivity"
     private lateinit var targetDeals: List<Datum>
@@ -36,6 +26,11 @@ class MainActivity : Activity(), DealListFragment.OnFragmentInteractionListener 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //Set action bar
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.mipmap.target_logo)
+
+        //Show list fragment
         if (savedInstanceState == null) {
             loadAnimation = true
             listFragment.loadAnimation(loadAnimation)
@@ -46,6 +41,7 @@ class MainActivity : Activity(), DealListFragment.OnFragmentInteractionListener 
             currentScreenID = ScreenID.LIST
         }
 
+        //Set deal item click listener
         listFragment.setOnListItemClickListener(View.OnClickListener {
             val viewHolder = it.tag as RecyclerView.ViewHolder
             val position = viewHolder.adapterPosition
@@ -54,16 +50,9 @@ class MainActivity : Activity(), DealListFragment.OnFragmentInteractionListener 
             replaceFragment(currentScreenID)
         })
 
-        val retrofit = Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build()
-
-        val targetDealService = retrofit.create(TargetDealService::class.java)
-
-        val repository = DealRepository(DealDatabase.getInstance(this).dealDao(), targetDealService)
-        repository.getDeals().observeForever {
+        //Observe the deals from the view model
+        val dealViewModel = DealViewModelFactory.getDealViewModel(this, this)
+        dealViewModel.getDeals().observeForever {
             targetDeals = it
             listFragment.setDealsData(targetDeals)
         }

@@ -1,10 +1,8 @@
 <resources>
-    <style name="AppTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
-        <item name="android:actionBarStyle">@style/TargetActionBar</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionBarStyle">@style/TargetActionBar</item>
     </style>
-    <style name="TargetActionBar"
-        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@drawable/actionbar_color</item>
-        <item name="android:logo">@drawable/target_logo_black</item>
+    <style name="TargetActionBar" parent="Widget.AppCompat.ActionBar.Solid">
+        <item name="background">@drawable/actionbar_color</item>
     </style>
 </resources>

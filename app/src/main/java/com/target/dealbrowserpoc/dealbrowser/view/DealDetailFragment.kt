@@ -17,7 +17,6 @@ import com.target.dealbrowserpoc.dealbrowser.entity.Datum
 
 class DealDetailFragment : Fragment() {
     private lateinit var detailData: Datum
-
     private lateinit var detailImage: ImageView
     private lateinit var detailPrice: TextView
     private lateinit var regularText: View
